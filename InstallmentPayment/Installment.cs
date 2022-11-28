@@ -1,31 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InstallmentPayment;
-
+﻿using InstallmentPayment;
+using System.Text.RegularExpressions;
 
 namespace INSTALLMENT_APP
 {
- /*   var SelectPlan = Console.ReadLine();
 
-    var myplans = check_option switch
-    {
-        "1" => user.Balance,
-
-        "2" => SelectPlan switch
-        {
-            "1" => Dailyplan(user),
-            "2" => Weeklyplan(user),
-
-
-            _ => throw new NotImplementedException(),
-        },
-
-        _ => throw new NotImplementedException(),
-    };
-*/
     public class App
     {
 
@@ -42,17 +20,18 @@ namespace INSTALLMENT_APP
 
      };
 
-
             Console.WriteLine("Enter your 4 digit password");
             var EnterPassword = Console.ReadLine();
-            if (string.IsNullOrEmpty(EnterPassword))
+            User user;
+            string mypassword = @"^[0-9]{4}$";
+            Regex regpass = new Regex(mypassword);
+            if (string.IsNullOrEmpty(EnterPassword) || regpass.IsMatch(EnterPassword))
             {
-                Console.WriteLine("Password can't be empty! Input your pasword once more");
+                Console.WriteLine("Wrong pin, enter again:");
                 EnterPassword = Console.ReadLine();
             }
 
-
-            var user = users.FirstOrDefault(x => x.Password == EnterPassword);
+            user = users.FirstOrDefault(x => x.Password == EnterPassword);
             if (user is not null)
             {
                 while (true)
@@ -69,73 +48,76 @@ namespace INSTALLMENT_APP
                         break;
                     }
 
-                    try
-                    {
-                        Console.WriteLine("Press 1 to select payment plan 2 to exit");
-                        var SelectOption = Convert.ToInt32(Console.ReadLine());
-
-                        switch (SelectOption)
-                        {
-
-                            case 1:
-                                Console.WriteLine("Press 1 for daily,2 to pay weekly,3 bi-weekly,4 monthly \n 5 Six month, 6 One year plan ");
-                                var SelectPlan = Convert.ToInt32(Console.ReadLine());
-                                switch (SelectPlan)
-                                {
-
-                                    case 1:
-
-                                        PaymentPlan.Dailyplan(user);
-                                        break;
-                                    case 2:
-                                        PaymentPlan.Weeklyplan(user);
-                                        break;
-                                    case 3:
-                                        PaymentPlan.BiWeeklyplan(user);
-                                        break;
-                                    case 4:
-                                        PaymentPlan.Monthlyplan(user);
-                                        break;
-                                    case 5:
-                                        PaymentPlan.SixMonthplan(user);
-                                        break;
-                                    case 6:
-                                        PaymentPlan.Yearplan(user);
-                                        break;
-
-                                    default:
-                                        Console.WriteLine("invalid option");
-                                        break;
-                                }
-                                break;
-                            case 2:
-                                Console.WriteLine("Goodbye buddy!");
-                                Environment.Exit(1);
-
-                                break;
-
-                        }
-
-                    }
-                    catch (FormatException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (OverflowException ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-
-
+                    Select.SwitchMode(user);
 
                 }
             }
             else
             {
-                Createaccount.Register();
+               
+                    Random rd = new Random();
+                    int productprice = rd.Next(532, 3500);
+    
+                try
+                {
+                    Console.WriteLine("Account does not exist, Create new account");
+                    string userpattern = @"^[a-zA-Z]{6}$";
+                    Regex userreg = new Regex(userpattern);
+                    Console.WriteLine("Enter username");
+                    var Name = Console.ReadLine();
+                    if (userreg.IsMatch(Name)){
+                        Console.WriteLine("validated");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Name must be alphabets only and not more than 6 characters");
+
+                    }
+
+                    Console.WriteLine("Enter password");
+                    var Password = Console.ReadLine();
+
+                    string mypattern = @"^[0-9]{4}$";
+                    Regex reg = new Regex(mypattern);
+
+                    if (reg.IsMatch(Password)){
+                        Console.WriteLine("validated ");
+                    }
+                    else
+                    {
+                        Console.WriteLine("invalid ");
+                        Console.WriteLine("Enter password");
+                        Password = Console.ReadLine();
+                    }
+
+                    Console.WriteLine("Enter product");
+
+                    var Product = Console.ReadLine();
+                    users.Add(new User { Name = Name, Password = Password, Balance = productprice, Account = "", Product = Product, Initial = 0 });
+                    Console.WriteLine("Registration successful");
+                    user = users.FirstOrDefault(x => x.Password == Password);
+
+
+                    users.ForEach(user => Console.WriteLine($"usernames {user.Name} Password: {user.Password} Product: {user.Product} Balance: {user.Balance}"));
+                    Console.WriteLine($"Welcome {user.Name} you are owing us {user.Balance}");
+                    Select.SwitchMode(user);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
+                catch (OverflowException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+
 
             }
-
 
         }
 
@@ -144,7 +126,7 @@ namespace INSTALLMENT_APP
             throw new NotImplementedException();
         }
 
-       
+
     }
 
 }
