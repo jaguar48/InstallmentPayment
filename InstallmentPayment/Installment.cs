@@ -1,20 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using InstallmentPayment;
 
 
-namespace ATM_PROJECT
+namespace INSTALLMENT_APP
 {
+ /*   var SelectPlan = Console.ReadLine();
 
+    var myplans = check_option switch
+    {
+        "1" => user.Balance,
+
+        "2" => SelectPlan switch
+        {
+            "1" => Dailyplan(user),
+            "2" => Weeklyplan(user),
+
+
+            _ => throw new NotImplementedException(),
+        },
+
+        _ => throw new NotImplementedException(),
+    };
+*/
     public class App
     {
-        private static DateTime dateTime;
-        public static void Userrecords()
+
+        public static void Installment()
         {
 
             var users = new List<User>{
@@ -29,16 +44,22 @@ namespace ATM_PROJECT
 
 
             Console.WriteLine("Enter your 4 digit password");
-            var enter_pin = Console.ReadLine();
+            var EnterPassword = Console.ReadLine();
+            if (string.IsNullOrEmpty(EnterPassword))
+            {
+                Console.WriteLine("Password can't be empty! Input your pasword once more");
+                EnterPassword = Console.ReadLine();
+            }
 
-            var user = users.FirstOrDefault(x => x.Password == enter_pin);
+
+            var user = users.FirstOrDefault(x => x.Password == EnterPassword);
             if (user is not null)
             {
                 while (true)
                 {
-                    if (user.Balance != user.Initial)
+                    if (user.Balance != user.Initial && user.Balance >= user.Initial)
                     {
-                        Console.WriteLine($"Welcome {user.Name} You are owing us ");
+                        Console.WriteLine($"Welcome {user.Name} You are owing us ${user.Balance - user.Initial} for {user.Product}");
 
                     }
                     else
@@ -48,119 +69,82 @@ namespace ATM_PROJECT
                         break;
                     }
 
-
-                    Console.WriteLine("Press 1 to see pending, 2 to select payment plan 3 to exit");
-                    var check_option = Console.ReadLine();
-                    if (check_option == "1")
+                    try
                     {
+                        Console.WriteLine("Press 1 to select payment plan 2 to exit");
+                        var SelectOption = Convert.ToInt32(Console.ReadLine());
 
-
-                        Console.WriteLine($"balance: ${user.Balance}");
-                        Console.WriteLine("Press any key to go to main menu");
-
-                        /*Console.ReadKey();
-                        continue;*/
-                    }
-                    else if (check_option == "2")
-                    {
-                        Console.WriteLine("Press 1 for daily,2 to pay weekly,3 bi-weekly ");
-                        var check_plan = Console.ReadLine();
-                        if (check_plan == "1")
+                        switch (SelectOption)
                         {
-                            Dailyplan(user);
+
+                            case 1:
+                                Console.WriteLine("Press 1 for daily,2 to pay weekly,3 bi-weekly,4 monthly \n 5 Six month, 6 One year plan ");
+                                var SelectPlan = Convert.ToInt32(Console.ReadLine());
+                                switch (SelectPlan)
+                                {
+
+                                    case 1:
+
+                                        PaymentPlan.Dailyplan(user);
+                                        break;
+                                    case 2:
+                                        PaymentPlan.Weeklyplan(user);
+                                        break;
+                                    case 3:
+                                        PaymentPlan.BiWeeklyplan(user);
+                                        break;
+                                    case 4:
+                                        PaymentPlan.Monthlyplan(user);
+                                        break;
+                                    case 5:
+                                        PaymentPlan.SixMonthplan(user);
+                                        break;
+                                    case 6:
+                                        PaymentPlan.Yearplan(user);
+                                        break;
+
+                                    default:
+                                        Console.WriteLine("invalid option");
+                                        break;
+                                }
+                                break;
+                            case 2:
+                                Console.WriteLine("Goodbye buddy!");
+                                Environment.Exit(1);
+
+                                break;
 
                         }
-                        else if (check_plan == "2")
-                        {
-                            Weeklyplan(user);
-                        }
-                        else if (check_option == "3")
-                        {
-                            BiWeeklyplan(user);
-
-                        }
-
-
 
                     }
-
-
-                    else
+                    catch (FormatException ex)
                     {
-                        Console.WriteLine("you selected invalid option");
-                        Console.WriteLine("Press any key to go to main menu");
-
-                        /*  Console.ReadKey();
-                          continue;*/
+                        Console.WriteLine(ex.Message);
                     }
+                    catch (OverflowException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+
 
                 }
             }
-
-
-        }
-
-        private static void Dailyplan(User user)
-        {
-            Console.WriteLine("Enter amount");
-            int InitialAmount = Convert.ToInt32(Console.ReadLine());
-            dateTime = DateTime.Now;
-            for (int i = InitialAmount; i <= user.Balance; i += InitialAmount)
+            else
             {
-
-
-                Console.WriteLine($"You will pay {InitialAmount} on {(dateTime.ToLongDateString())} and remaining {user.Balance - i} for {user.Product} ");
-
-
-                dateTime = dateTime.AddDays(1);
-                user.Initial += InitialAmount;
+                Createaccount.Register();
 
             }
-            Console.WriteLine("Total amount {0}", user.Initial);
+
 
         }
-        private static void Weeklyplan(User user)
+
+        private static void exit(int v)
         {
-            Console.WriteLine("Enter amount");
-            int InitialAmount = Convert.ToInt32(Console.ReadLine());
-            dateTime = DateTime.Now;
-            for (int i = InitialAmount; i <= user.Balance; i += InitialAmount)
-            {
-
-
-
-                Console.WriteLine($"You will pay {InitialAmount} on {(dateTime.ToLongDateString())} and remaining {user.Balance - i} ");
-
-
-                dateTime = dateTime.AddDays(7);
-                user.Initial += InitialAmount;
-
-            }
-            Console.WriteLine("Total amount {0}", user.Initial);
-
+            throw new NotImplementedException();
         }
-        private static void BiWeeklyplan(User user)
-        {
-            Console.WriteLine("Enter amount");
-            int InitialAmount = Convert.ToInt32(Console.ReadLine());
-            dateTime = DateTime.Now;
-            for (int i = InitialAmount; i <= user.Balance; i += InitialAmount)
-            {
-
-
-
-                Console.WriteLine($"You will pay {InitialAmount} on {(dateTime.ToLongDateString())} and remaining {user.Balance - i} ");
-
-
-                dateTime = dateTime.AddDays(14);
-                user.Initial += InitialAmount;
-
-            }
-            Console.WriteLine($"Total amount ${user.Initial}");
-
-        }
-
 
        
     }
+
 }

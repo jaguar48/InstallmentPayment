@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using InstallmentPayment;
 
 
-namespace ATM_PROJECT
+namespace INSTALLMENT_APP
 {
     
     public class Payment
@@ -18,7 +18,7 @@ namespace ATM_PROJECT
         {
 
 
-            App.Userrecords();
+            App.Installment();
 
         }
     }
