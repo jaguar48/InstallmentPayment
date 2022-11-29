@@ -36,7 +36,7 @@ namespace InstallmentPayment
                     user.Initial += InitialAmount;
 
                 }
-                Console.WriteLine("Total amount {0}", user.Initial);
+                Console.WriteLine("Total amount to be paid {0}", user.Initial);
             }
             catch (FormatException ex)
             {
@@ -84,7 +84,7 @@ namespace InstallmentPayment
 
                 }
 
-                Console.WriteLine("Total amount {0}", user.Initial);
+                Console.WriteLine("Total amount to be paid {0}", user.Initial);
             }
             catch (FormatException ex)
             {
@@ -132,7 +132,7 @@ namespace InstallmentPayment
                     user.Initial += InitialAmount;
 
                 }
-                Console.WriteLine($"Total amount ${user.Initial}");
+                Console.WriteLine($"Total amount to be paid ${user.Initial}");
             }
             catch (FormatException ex)
             {

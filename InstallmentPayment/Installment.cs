@@ -22,10 +22,21 @@ namespace INSTALLMENT_APP
 
             Console.WriteLine("Enter your 4 digit password");
             var EnterPassword = Console.ReadLine();
+            if (string.IsNullOrEmpty(EnterPassword))
+            {
+                Console.WriteLine("You must enter pin");
+            }
             User user;
             string mypassword = @"^[0-9]{4}$";
+
             Regex regpass = new Regex(mypassword);
-            if (string.IsNullOrEmpty(EnterPassword) || regpass.IsMatch(EnterPassword))
+           
+            if (regpass.IsMatch(EnterPassword))
+            {   
+                Console.WriteLine("Pin validated");
+                
+            }
+            else
             {
                 Console.WriteLine("Wrong pin, enter again:");
                 EnterPassword = Console.ReadLine();
@@ -54,10 +65,10 @@ namespace INSTALLMENT_APP
             }
             else
             {
-               
-                    Random rd = new Random();
-                    int productprice = rd.Next(532, 3500);
-    
+
+                Random rd = new Random();
+                int productprice = rd.Next(532, 3500);
+
                 try
                 {
                     Console.WriteLine("Account does not exist, Create new account");
@@ -65,7 +76,8 @@ namespace INSTALLMENT_APP
                     Regex userreg = new Regex(userpattern);
                     Console.WriteLine("Enter username");
                     var Name = Console.ReadLine();
-                    if (userreg.IsMatch(Name)){
+                    if (userreg.IsMatch(Name))
+                    {
                         Console.WriteLine("validated");
                     }
                     else
@@ -80,7 +92,8 @@ namespace INSTALLMENT_APP
                     string mypattern = @"^[0-9]{4}$";
                     Regex reg = new Regex(mypattern);
 
-                    if (reg.IsMatch(Password)){
+                    if (string.IsNullOrEmpty(EnterPassword) || regpass.IsMatch(EnterPassword))
+                    {
                         Console.WriteLine("validated ");
                     }
                     else
@@ -106,7 +119,7 @@ namespace INSTALLMENT_APP
                 {
                     Console.WriteLine(ex.Message);
                 }
-                
+
                 catch (OverflowException ex)
                 {
                     Console.WriteLine(ex.Message);
