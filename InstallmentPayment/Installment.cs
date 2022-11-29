@@ -30,11 +30,11 @@ namespace INSTALLMENT_APP
             string mypassword = @"^[0-9]{4}$";
 
             Regex regpass = new Regex(mypassword);
-           
+
             if (regpass.IsMatch(EnterPassword))
-            {   
+            {
                 Console.WriteLine("Pin validated");
-                
+
             }
             else
             {
@@ -72,7 +72,7 @@ namespace INSTALLMENT_APP
                 try
                 {
                     Console.WriteLine("Sorry, Account does not exist, Create new account");
-                    string userpattern = @"^[a-zA-Z]{6}$";
+                    string userpattern = @"^[a-zA-Z]{5}$";
                     Regex userreg = new Regex(userpattern);
                     Console.WriteLine("Enter username");
                     var Name = Console.ReadLine();
@@ -82,7 +82,8 @@ namespace INSTALLMENT_APP
                     }
                     else
                     {
-                        Console.WriteLine("Name must be alphabets only and not more than 6 characters");
+                        Console.WriteLine("Name must be alphabets only and must be 5 characters only \n Enter again");
+                        Name = Console.ReadLine();
 
                     }
 
