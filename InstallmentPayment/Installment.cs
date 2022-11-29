@@ -49,7 +49,7 @@ namespace INSTALLMENT_APP
                 {
                     if (user.Balance != user.Initial && user.Balance >= user.Initial)
                     {
-                        Console.WriteLine($"Welcome {user.Name} You are owing us ${user.Balance - user.Initial} for {user.Product}");
+                        Console.WriteLine($"Welcome {user.Name} ");
 
                     }
                     else
@@ -71,7 +71,7 @@ namespace INSTALLMENT_APP
 
                 try
                 {
-                    Console.WriteLine("Account does not exist, Create new account");
+                    Console.WriteLine("Sorry, Account does not exist, Create new account");
                     string userpattern = @"^[a-zA-Z]{6}$";
                     Regex userreg = new Regex(userpattern);
                     Console.WriteLine("Enter username");

@@ -133,6 +133,7 @@ namespace InstallmentPayment
 
                 }
                 Console.WriteLine($"Total amount to be paid ${user.Initial}");
+                Console.Clear();
             }
             catch (FormatException ex)
             {
